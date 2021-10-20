@@ -3,6 +3,9 @@
 var formEl = document.querySelector("#task-form");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 
+
+//******task FORM HANDLER function *****
+
 //define and package (as 1 obj) name and type as reference in the form input fields. Can easily add more properties here
   var taskFormHandler =  function(event) {
     event.preventDefault()
@@ -10,6 +13,14 @@ var tasksToDoEl = document.querySelector("#tasks-to-do");
     //(remember can check values by  console.dir)
     var taskNameInput = document.querySelector("input[name='task-name']").value;
     var taskTypeInput = document.querySelector("select[name='task-type']").value;
+
+    //check if input values are empty strings
+    if (!taskNameInput || !taskTypeInput) {
+        alert("I thought you wanted to accomplish something??");
+        return false;
+    }
+
+    formEl.reset();
 
     //package data as object
     var taskDataObj = {
@@ -22,7 +33,7 @@ var tasksToDoEl = document.querySelector("#tasks-to-do");
   };
 
 
-
+//*******create TASK ELEMENT function******
 //Funk to create list item obj. HTML/DOM current holds: name and type
 var createTaskEl =  function(taskDataObj) {
   //create list item
@@ -44,7 +55,6 @@ tasksToDoEl.appendChild(listItemEl);
 };
 
 
-
+//ADD TASK in Viewport ie run app
 //add new task by listening to form  and applying the desired action, nicknamed: creatTaskHandler
 formEl.addEventListener("submit", taskFormHandler);
-
