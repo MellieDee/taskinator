@@ -19,6 +19,7 @@
         <input type="text" name="task-name"  class="text-input" placeholder="Enter Task Name"/>
       </div>
 
+      <!--   TASK ASSIGNMENT section   -->
       <div class="form-group">
         <select name="task-type" class="select-dropdown">
           <option value="" disabled selected>Task Category</option>
@@ -30,20 +31,40 @@
           <option value="House">House</option>
         </select>
       </div>
- 
-    
+
       <div class="form-group">
         <button class="btn" id="save-task">Add Task</button>
      </div>
     </form>
-
   </header>
   
-  <main class="page-content">
+
+  <main class="page-content" id="page-content">
+
+
+      <!--   TASKS TO DO   -->
     <section class="task-list-wrapper">
-      <h2 class="list-title">Tasks To Do</h2>
+      <h2 class="list-title">To Do</h2>
         <ul class="task-list" id="tasks-to-do"></ul>
       </section>
+
+
+      <!--   TASKS IN PROGRESS    -->
+      <section class="task-list-wrapper">
+        <h2 class="list-title">In Progess</h2>
+        <ul class="task-list" id="tasks-in-progress"></ul>
+      </section>
+
+
+      <!--   TASK DONE   -->
+      <section class="task-list-wrapper">
+        <h2 class="list-title">Completed</h2>
+        <ul class="task-list" id="tasks-completed"></ul>
+      </section>
+   
+
+
+
   </main>
 
 
