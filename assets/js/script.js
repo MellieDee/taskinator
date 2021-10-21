@@ -163,8 +163,10 @@ var createTaskEl =  function(taskDataObj) {
     //add  list item and its info to ul list
     tasksToDoEl.appendChild(listItemEl);
 
+    //push new item to storage array and store in localStorage
     taskDataObj.id = taskIdCounter;
     tasks.push(taskDataObj);
+    localStorage.setItem("tasks", tasks);
 
     //increase task counter for next unique id
     taskIdCounter++;
@@ -273,6 +275,10 @@ console.log(event.target)
   console.log(tasks)
 };
 
+//save changes locally
+var saveTasks = function() {
+  localStorage.setItem("tasks", tasks);
+}
 
 pageContentEl.addEventListener("click", taskButtonHandler);
 pageContentEl.addEventListener("change", taskStatusChangeHandler);
