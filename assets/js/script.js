@@ -309,6 +309,9 @@ var loadTasks = function () {
     }
   }
 
+
+  //   ******    Commented parts are what was rplaced by running savedTasks through CreateTaskEl   ****
+  
   //     //to sync task Ids
   //     tasks[i].id = taskIdCounter
 
