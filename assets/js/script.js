@@ -38,31 +38,6 @@ var taskFormHandler = function (event) {
 
   //check if task is new or being edited by seeing if it already has data-tastk-id attribute
   var isEdit = formEl.hasAttribute("data-task-id");
-
-  //**** Complete EDIT TASK****/
-  var completeEditTask = function (taskName, taskType, taskID) {
-    //find matching task list item
-    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
-
-    //set new values
-    taskSelected.querySelector("h3.task-name").textContent = taskName;
-    taskSelected.querySelector("span.task-type").textContent = taskType;
-
-    //loop through tasks array and taskobject wtih new content
-    for (var i = 0; i < tasks.length; i++) {
-      if (tasks[i].id === parseInt(taskId)) {
-        tasks[i].name = taskName;
-        tasks[i].type = taskType;
-      }
-    };
-    saveTasks();
-
-    alert("Task Updated!");
-    //clear form contents and change button back
-    formEl.removeAttribute("data-task-id");
-    document.querySelector("#save-task").textContent = "Add Task";
-  };
-
   //  decide to Save Changes or Create new object /
   //has data attribute,so get task id and call lfunction to complete edit process
   if (isEdit) {
@@ -79,7 +54,80 @@ var taskFormHandler = function (event) {
     };
     createTaskEl(taskDataObj);
   }
-}
+};
+
+//*******  createTaskEl  function  ******
+//Funk to create list item obj. HTML/DOM current holds: name and type
+var createTaskEl = function (taskDataObj) {
+  //create list item with   class name of
+  var listItemEl = document.createElement("li");
+  listItemEl.className = "task-item";
+
+  //assign unique task ID to each task as custom attribute
+  listItemEl.setAttribute("data-task-id", taskIdCounter);
+
+  //define new task info we want to add to the individual tasks
+  //create DIV to hold task info and add to list item
+  var taskInfoEl = document.createElement("div");
+  //class name for DIV aka taskInfoEl
+  taskInfoEl.className = "task-info";
+  //add HTML content to div
+  taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span";
+  //add task info to the list item
+  listItemEl.appendChild(taskInfoEl);
+
+  var taskActionsEl = createTaskActions(taskIdCounter);
+  listItemEl.appendChild(taskActionsEl);
+
+  //add  list item and its info to ul list
+  tasksToDoEl.appendChild(listItemEl);
+
+
+  // //add taskIDCounter value to taskDataObj as a property
+  taskDataObj.id = taskIdCounter;
+  // //push entire new item to tasks array
+  tasks.push(taskDataObj);
+
+  saveTasks();
+
+  //increase task counter for next unique id
+  taskIdCounter++;
+
+  // console.log(taskDataObj);
+  // console.log(taskDataObj.status);
+};
+
+
+//ADD TASK in Viewport ie run app
+//add new task by listening to form  and applying the desired action, nicknamed: creatTaskHandler
+formEl.addEventListener("submit", taskFormHandler);
+
+
+//**** Complete EDIT TASK****/
+var completeEditTask = function (taskName, taskType, taskId) {
+  //find matching task list item
+  var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+
+  //set new values
+  taskSelected.querySelector("h3.task-name").textContent = taskName;
+  taskSelected.querySelector("span.task-type").textContent = taskType;
+
+  //loop through tasks array and taskobject wtih new content
+  for (var i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(taskId)) {
+      tasks[i].name = taskName;
+      tasks[i].type = taskType;
+    }
+  };
+  saveTasks();
+
+
+  alert("Task Updated!");
+  //clear form contents and change button back
+  formEl.removeAttribute("data-task-id");
+  document.querySelector("#save-task").textContent = "Add Task";
+};
+
 
 
 //********* TASK ACTIONS Function Starts ********/
@@ -135,54 +183,6 @@ var createTaskActions = function (taskId) {
 }
 
 
-//*******  create TASK  function  ******
-
-//Funk to create list item obj. HTML/DOM current holds: name and type
-var createTaskEl = function (taskDataObj) {
-
-
-  //create list item
-  var listItemEl = document.createElement("li");
-  listItemEl.className = "task-item";
-
-  //assign unique task ID to each task as custom attribute
-  listItemEl.setAttribute("data-task-id", taskIdCounter);
-
-  //define new task info we want to add to the individual tasks
-  //create DIV to hold task info and add to list item
-  var taskInfoEl = document.createElement("div");
-  //class name for DIV aka taskInfoEl
-  taskInfoEl.className = "task-info";
-  //add HTML content to div
-  taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span";
-  //add task info to the list item
-  listItemEl.appendChild(taskInfoEl);
-
-  var taskActionsEl = createTaskActions(taskIdCounter);
-  listItemEl.appendChild(taskActionsEl);
-
-  //add  list item and its info to ul list
-  tasksToDoEl.appendChild(listItemEl);
-
-
-  //add taskIDCounter value to taskDataObj as a property
-  taskDataObj.id = taskIdCounter;
-  //push entire new item to tasks array
-  tasks.push(taskDataObj);
-  saveTasks();
-
-  //increase task counter for next unique id
-  taskIdCounter++;
-
-  // console.log(taskDataObj);
-  // console.log(taskDataObj.status);
-};
-
-
-//ADD TASK in Viewport ie run app
-//add new task by listening to form  and applying the desired action, nicknamed: creatTaskHandler
-formEl.addEventListener("submit", taskFormHandler);
-
 
 //*******Task BUTTON HANDLER function *******/
 var taskButtonHandler = function (event) {
@@ -232,27 +232,23 @@ var deleteTask = function (taskId) {
   var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
   console.log(taskSelected);
 
+  // taskSelected.remove();
+  taskSelected.remove();
 
   //create new array to hold updated list of tasks
   var updatedTaskArr = [];
 
   //loop thru current tasks
   for (var i = 0; i < tasks.length; i++) {
-    // if (tasks[i].id doesn't match the value of taskID, lets keep and push to new array
+    // if (tasks[i].id doesn't match the value of taskId, lets keep and push to new array
     if (tasks[i].id !== parseInt(taskId)) {
       updatedTaskArr.push(tasks[i]);
     }
   }
-
-  //Remove before update the array??
-  taskSelected.remove();
-
   // reassign tasks array to be the same as updatedTaskArr
   tasks = updatedTaskArr;
 
   saveTasks();
-
-  // taskSelected.remove();
 }
 
 //*****     STATUS CHANGE Handler  Function Starts *******/
@@ -288,11 +284,59 @@ var taskStatusChangeHandler = function (event) {
   saveTasks();
 };
 
-//save changes locally
-var saveTasks = function() {
+//**** SAVE TASKS in Local Storage  ***
+var saveTasks = function () {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
+//   *** LOADS Tasks from LOCAL Storage ***
+var loadTasks = function () {
+  //Gets task items from localStorage & //Converts tasks from the string format back into an array of objects.
+  tasks = localStorage.getItem("tasks");
+  console.log(tasks);
 
+  tasks = JSON.parse(tasks);
+  console.log(tasks);
+
+  // //Iterates through a tasks array and creates task elements on the page from it.
+  for (var i = 0; i < tasks.length; i++) {
+
+    if (tasks === null || tasks === "") {
+      tasks = [];
+      return false;
+  
+    } else {
+  
+    //to sync task Ids
+    tasks[i].id = taskIdCounter
+
+    //taskIdCounter = tasks[i].id ??
+    console.log(tasks[i]);
+
+    var listItemEl = document.createElement("li");
+    listItemEl.className = "task-item";
+    listItemEl.setAttribute("data-task-id", tasks[i].id);
+    console.log(listItemEl);
+  
+  var taskInfoEl = document.createElement("div");
+  taskInfoEl.className = "task-info";
+  taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
+  listItemEl.appendChild(taskInfoEl);
+
+  var taskActionsEl = createTaskActions(tasks[i].id);
+  listItemEl.appendChild(taskActionsEl);
+  console.log(listItemEl);
+  }
+}
+
+if (tasks[i].status === "to-do") {
+  listItemEl.querySelector("select[name= 'status-change']").selectedIndex === 0
+}
+
+}
 pageContentEl.addEventListener("click", taskButtonHandler);
 pageContentEl.addEventListener("change", taskStatusChangeHandler);
+
+
+
+loadTasks();
