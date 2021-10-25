@@ -59,7 +59,7 @@ var taskFormHandler = function (event) {
 //*******  createTaskEl  function  ******
 //Funk to create list item obj. HTML/DOM current holds: name and type
 var createTaskEl = function (taskDataObj) {
-  //create list item with   class name of
+  //create list item with   class name of task-item
   var listItemEl = document.createElement("li");
   listItemEl.className = "task-item";
 
